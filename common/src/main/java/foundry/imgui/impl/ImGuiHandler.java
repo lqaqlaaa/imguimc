@@ -33,7 +33,7 @@ public class ImGuiHandler {
 
     public ImGuiHandler(final Window mainWindow) {
         this.mainWindow = mainWindow;
-        this.windowImpl = new ImGuiWindowHandlerGLFW(this);
+        this.windowImpl = ImGuiMCPlatform.INSTANCE.createWindowHandler(this);
         this.rendererImpl = ImGuiMCPlatform.INSTANCE.createRenderer();
         this.fontManager = ImGuiMCPlatform.INSTANCE.createFontManager();
 
