@@ -19,6 +19,12 @@ public interface ImGuiMCPlatform extends ImGuiLoadEvent, ImGuiLoadEvents.Pre, Im
             .findFirst()
             .orElseThrow(() -> new RuntimeException("Failed to find platform provider"));
 
+    /** Creates the platform-specific window/input backend. Android implementations must not depend on GLFW callbacks. */
+    @Contract(pure = true)
+    default foundry.imgui.impl.ImGuiWindowHandler createWindowHandler(final foundry.imgui.impl.ImGuiHandler bridge) {
+        return new foundry.imgui.impl.ImGuiWindowHandlerGLFW(bridge);
+    }
+
     @Contract(pure = true)
     default ImGuiRenderer createRenderer() {
         //? if < 1.21.6 {
