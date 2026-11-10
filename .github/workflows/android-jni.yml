@@ -1,0 +1,36 @@
+name: Android ARM64 JNI
+on:
+  push:
+    branches:
+      - android-arm64-neoforge-1.21.1
+    paths:
+      - '.github/workflows/android-jni.yml'
+      - 'buildSrc/android-jni/**'
+      - 'buildSrc/scripts/build-android-jni.sh'
+  workflow_dispatch:
+
+jobs:
+  build-android-jni:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout ImGuiMC fork
+        uses: actions/checkout@v4
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+      - name: Setup Android NDK
+        uses: android-actions/setup-android@v3
+      - name: Build Android ARM64 JNI
+        env:
+          ANDROID_NDK_HOME: ${{ env.ANDROID_NDK_HOME }}
+        run: bash buildSrc/scripts/build-android-jni.sh
+      - name: Upload Android JNI jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: imgui-java-natives-android-arm64
+          path: build/imgui-java-natives-android-arm64.jar
+          if-no-files-found: error
